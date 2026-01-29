@@ -26,6 +26,7 @@ export default function MyComponent({ number, string, boolean, object, functionP
         <p>Object: {object.name} {object.lastName} {object.age}</p>
         <p>Array : {array.map( item => `${item} `)}</p>
         <p>Children: {children}</p>
+        <p>Function: Консоль</p>
         </>
     )
 }
