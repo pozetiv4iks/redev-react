@@ -8,11 +8,12 @@ export default function ShopCart() {
   ]);
 
   const updateItemCount = (id) => {
-    setCart(cart.map(item =>
-      item.id === id ? { ...item, count: item.count + 1 } : item
-    ));
+    setCart(
+      cart.map((item) =>
+        item.id === id ? { ...item, count: item.count + 1 } : item,
+      ),
+    );
   };
-
 
   const removeItem = (id) => {
     setCart((cart) => cart.filter((item) => item.id !== id));
@@ -26,8 +27,9 @@ export default function ShopCart() {
     <div className="container">
       {cart.map((item) => (
         <ShopItem
+          key={item.id}
           cartItem={item}
-          onUpdateCount={() => updateItemCount()}
+          onUpdateCount={() => updateItemCount(item.id)}
           onRemove={() => removeItem(item.id)}
         />
       ))}
