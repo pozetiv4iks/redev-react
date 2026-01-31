@@ -1,14 +1,12 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
+import DogsComponent from './components/DogsComponent'
 
 function App() {
 
   return (
-    <>
-     
-    </>
+    <div className='container'>
+     <DogsComponent />
+    </div>
   )
 }
 
