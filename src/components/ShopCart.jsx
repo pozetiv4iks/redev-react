@@ -1,5 +1,5 @@
 import { useState } from "react";
-import ShopItem from "./ShopItem";
+import ShopItem from "./items/ShopItem";
 
 export default function ShopCart() {
   const [cart, setCart] = useState([

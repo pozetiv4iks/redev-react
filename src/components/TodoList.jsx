@@ -1,4 +1,5 @@
 import { useState } from "react";
+import TaskItem from "./items/TaskItem";
 
 export default function TodoList() {
   const [tasks, setTasks] = useState(["Купить хлеб", "Погулять с собакой"]);
@@ -17,7 +18,7 @@ export default function TodoList() {
 
       <ul>
         {tasks.map((task) => (
-          <li>{task}</li>
+          <TaskItem task={task}  />
         ))}
       </ul>
       <button onClick={() => handleCreateTask()} >Создать задачу</button>

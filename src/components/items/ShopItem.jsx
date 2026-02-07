@@ -1,4 +1,8 @@
-export default function ShopItem({ onUpdateCount, onRemove, cartItem }) {
+import { memo } from "react";
+
+function ShopItem({ onUpdateCount, onRemove, cartItem }) {
+  console.log(cartItem);
+  
   return (
     <div
       style={{
@@ -20,3 +24,7 @@ export default function ShopItem({ onUpdateCount, onRemove, cartItem }) {
     </div>
   );
 }
+
+export default memo(ShopItem, (prevProps, nextProps) => {
+  return prevProps.cartItem === nextProps.cartItem
+})
