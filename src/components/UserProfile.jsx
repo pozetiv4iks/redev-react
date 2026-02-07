@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useState, memo } from "react";
+import UserInfo from "./items/UserInfo";
 
-export default function UserProfile() {
+function UserProfile() {
   const [user, setUser] = useState({
     name: "Иван",
     age: 25,
     isActive: true,
   });
-
+  
   const names = ["Stepan", "Pavel", "Ivan"];
 
   const handleChangeStatus = (user) => {
@@ -20,10 +21,7 @@ export default function UserProfile() {
   };
   return (
     <div className="container">
-      <h3>Профиль пользователя</h3>
-      <p>Имя: {user.name}</p>
-      <p>Возраст: {user.age}</p>
-      <p>Статус: {user.isActive ? "Активен" : "Неактивен"}</p>
+      <UserInfo user={user}/>
       <button onClick={() => setUser((user) => handleChangeName(user))}>
         Поменять имя
       </button>
@@ -36,3 +34,5 @@ export default function UserProfile() {
     </div>
   );
 }
+
+export default UserProfile
