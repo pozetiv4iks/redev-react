@@ -1,10 +1,31 @@
-import { StrictMode } from 'react'
+import { StrictMode, useEffect } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
-import App from './App.jsx'
+import ProjectTheme from './context/context'
+import ThemeBlock from './components/ThemeBlock'
+import { useState } from 'react'
+import './App.css'
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+const Root = () => {
+  const [theme, setTheme] = useState(true)
+
+  const handleChangeTheme = () => {
+    setTheme(prev => !prev);
+  }
+
+  useEffect(() => {
+    const rootElement = document.getElementById('root');
+    rootElement.style.backgroundColor = theme ? "#242424" : "#ffffff"
+    
+  }, [theme])
+
+  return (
+    <StrictMode>
+      <ProjectTheme.Provider value={theme}>
+        <ThemeBlock func={handleChangeTheme} />
+      </ProjectTheme.Provider>
+    </StrictMode>
+  )
+}
+
+createRoot(document.getElementById('root')).render(<Root />)
