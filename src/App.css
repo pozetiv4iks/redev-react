@@ -18,6 +18,16 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+.light-value{
+  background-color: #ffffff;
+  color: #242424;
+}
+
+.dark-value{
+  background-color: #242424;
+  color: #ffffff;
+}
+
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
