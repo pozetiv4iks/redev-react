@@ -1,16 +1,15 @@
-import { useEffect, useRef } from "react"
+import { useEffect, useRef } from "react";
 
- const withRenderTracker = (HocCOMP) => {
-    const count = useRef(1)
-    console.log(`${HocCOMP.name} отрендерен ${count.current}`);
+const withRenderTracker = (HocCOMP) => {
+  return (props) => {
+    const count = useRef(1);
+    console.log(`отрендерен ${count.current}`);
 
     useEffect(() => {
-        count.current += 1
-    }, [])
-    
-    return (props) => {
-        return <HocCOMP {...props} />
-    }
-}
+      count.current += 1;
+    });
+    return <HocCOMP {...props} />;
+  };
+};
 
-export default withRenderTracker
+export default withRenderTracker;

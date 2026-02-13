@@ -5,6 +5,10 @@ import SearchInput from "./components/SearchInput";
 import ItemList from "./components/ItemList";
 import withRenderTracker from "./RenderTrecker";
 
+const HocCounterButton = withRenderTracker(CounterButton);
+const HocSearchInput = withRenderTracker(SearchInput);
+const HocItemList = withRenderTracker(ItemList);
+
 function App() {
   const [count, setCount] = useState(0);
   const [value, setValue] = useState("");
@@ -18,16 +22,12 @@ function App() {
   }, []);
 
   const listItems = useMemo(() => {
-    const data = []
+    const data = [];
     for (let i = 0; i < 10; i++) {
-      data.push(i)
+      data.push(i);
     }
-    return data
-  }, [])
-
-  const HocCounterButton = withRenderTracker(CounterButton);
-  const HocSearchInput = withRenderTracker(SearchInput)
-  const HocItemList = withRenderTracker(ItemList)
+    return data;
+  }, []);
 
   return (
     <div>
@@ -50,7 +50,7 @@ function App() {
         }}
       >
         <HocSearchInput func={handleInputChange} />
-        <HocItemList data={listItems} value={value}/>
+        <HocItemList data={listItems} value={value} />
       </div>
     </div>
   );
