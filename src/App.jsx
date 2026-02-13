@@ -3,6 +3,7 @@ import "./App.css";
 import CounterButton from "./components/CounterButton";
 import SearchInput from "./components/SearchInput";
 import ItemList from "./components/ItemList";
+import withRenderTracker from "./RenderTrecker";
 
 function App() {
   const [count, setCount] = useState(0);
@@ -24,6 +25,10 @@ function App() {
     return data
   }, [])
 
+  const HocCounterButton = withRenderTracker(CounterButton);
+  const HocSearchInput = withRenderTracker(SearchInput)
+  const HocItemList = withRenderTracker(ItemList)
+
   return (
     <div>
       <div
@@ -35,7 +40,7 @@ function App() {
         }}
       >
         <p>{count}</p>
-        <CounterButton func={handleClick} />
+        <HocCounterButton func={handleClick} />
       </div>
       <div
         style={{
@@ -44,8 +49,8 @@ function App() {
           borderRadius: "15px",
         }}
       >
-        <SearchInput func={handleInputChange} />
-        <ItemList data={listItems} value={value}/>
+        <HocSearchInput func={handleInputChange} />
+        <HocItemList data={listItems} value={value}/>
       </div>
     </div>
   );
