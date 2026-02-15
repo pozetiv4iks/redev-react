@@ -98,6 +98,7 @@ console.log(savedData);`}</code>
           </li>
         </ul>
       </section>
+      <a href="https://learn.javascript.ru/localstorage">Ссылка</a>
       <Buttons prev={"/routes"} last={true} />
     </div>
   );
