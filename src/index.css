@@ -47,3 +47,11 @@ button:focus-visible {
   }
 }
 
+section{
+  text-align: left;
+  margin-bottom: 12px;
+}
+
+.bold{
+  font-weight: bold;
+}

@@ -1,6 +1,6 @@
 export default function Home() {
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ width: "100%", padding: "20px" }}>
       <h1 style={{ margin: "0 auto" }}>Главная</h1>
       <p style={{ marginBottom: "12px" }}>
         В навигации можно найти темы для прочтения
