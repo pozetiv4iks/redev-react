@@ -117,7 +117,7 @@ export default FormInput;
             рассинхронизацией id, что особенно важно в приложениях с SSR. 4.
           </li>
         </ul>
-        <a href="https://www.npmjs.com/package/react-hook-form">Ссылка</a>
+        <a href="https://react.dev/reference/react/useId">Ссылка</a>
       </section>
       <section>
         <h2>useTransition</h2>
@@ -282,7 +282,7 @@ export default LikeButton;
             (например, useTransition) для создания отзывчивого интерфейса.
           </li>
         </ul>
-        <a href="https://www.npmjs.com/package/react-hook-form">Ссылка</a>
+        <a href="https://react.dev/reference/react/useOptimistic">Ссылка</a>
       </section>
       <Buttons prev={"/builders"} next={"/react-hook-form"} />
     </div>
