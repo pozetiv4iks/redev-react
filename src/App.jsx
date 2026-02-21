@@ -6,7 +6,7 @@ import ToDoList from "./ToDoList";
 
 function App() {
   const [tasks, setTasks] = useState([]);
-  const [filter, setFilter] = useState("Активные");
+  const [filter, setFilter] = useState("all");
   return (
     <TaskContext.Provider value={{ tasks, setTasks }}>
       <FilterContext.Provider value={{ filter, setFilter }}>

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import Filter from "./components/Filter";
+import FilterList from "./components/FilterList";
 import InputToDo from "./components/InputToDo";
 import List from "./components/List";
 import TaskContext from "./context/taskContext";
@@ -25,7 +25,7 @@ export default function ToDoList() {
       </div>
       <InputToDo />
       <List />
-      <Filter />
+      <FilterList />
       <div className="clearBlock" style={{ paddingTop: "10px" }}>
         <span style={{ marginRight: "10px" }}>
           Осталось дел: {tasks.length}
