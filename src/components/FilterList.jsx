@@ -5,8 +5,8 @@ export default function FilterList() {
   const { setFilter } = useContext(FilterContext);
   const allFilters = [
     { id: 1, name: "All", value: "all" },
-    { id: 2, name: "Active", value: "active" },
-    { id: 3, name: "Complete", value: "complete" },
+    { id: 2, name: "Active", value: false },
+    { id: 3, name: "Complete", value: true },
   ];
   return (
     <div className="block">

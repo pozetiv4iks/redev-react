@@ -15,7 +15,7 @@ export default function InputToDo() {
 
   const onSubmit = (data) => {
 
-    setTasks([...tasks, { id: tasks.length, text: data.fieldName , status:"active"}]);
+    setTasks([...tasks, { id: crypto.randomUUID(), text: data.fieldName , isDone:false}]);
     reset();
   };
 

@@ -11,11 +11,11 @@ export default function ToDoList() {
   const { tasks, setTasks } = useContext(TaskContext);
 
   useEffect(() => {
-    setCount(tasks.filter((item) => item.status !== "complete").length)
-  }, []);
+    setCount(tasks.filter((item) => !item.isDone).length)
+  }, [tasks]);
 
   const handleClear = () => {
-    setTasks(tasks.filter((item) => item.status !== "complete"));
+    setTasks(tasks.filter((item) => !item.isDone));
   };
 
   return (
@@ -28,7 +28,7 @@ export default function ToDoList() {
       <FilterList />
       <div className="clearBlock" style={{ paddingTop: "10px" }}>
         <span style={{ marginRight: "10px" }}>
-          Осталось дел: {tasks.length}
+          Осталось дел: {count}
         </span>
         <Button func={() => handleClear()}>Очистить выполненные</Button>
       </div>

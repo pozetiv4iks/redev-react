@@ -8,20 +8,23 @@ export default function List() {
   const { filter } = useContext(FilterContext);
 
   const filteredList = useMemo(() => {
+    
     switch (filter) {
-      case "active":
-        return tasks.filter((item) => !item.completed);
-      case "complete":
-        return tasks.filter((item) => item.completed);
+      case false:
+        return tasks.filter((item) => !item.isDone);
+      case true:
+        return tasks.filter((item) => item.isDone);
       default:
         return tasks;
     }
   }, [tasks, filter]);
 
+  
+  
   return (
     <div className="block">
       {filteredList.map((item) => (
-        <Card key={item.id} item={item} />
+        <Card item={item} />
       ))}
     </div>
   );
