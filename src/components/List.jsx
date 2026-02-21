@@ -1,3 +1,11 @@
+import { useContext } from "react";
+import TaskContext from "../context/taskContext";
+
 export default function List() {
-  return <div className="block">list</div>;
+
+    const {tasks} = useContext(TaskContext)
+  return(
+  <div className="block">
+    {tasks.map(item => <p>{item.text}</p>)}
+  </div>);
 }

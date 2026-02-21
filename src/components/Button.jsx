@@ -1,8 +1,8 @@
-export default function Button () {
+export default function Button ({func, children, type="submit"}) {
 
     return(
-        <div className="block">
-        button
-        </div>
+        <button type={type} onClick={func} className="button">
+        {children}
+        </button>
     )
 }
