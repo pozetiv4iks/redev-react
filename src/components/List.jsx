@@ -2,23 +2,20 @@ import { useContext, useMemo } from "react";
 import TaskContext from "../context/taskContext";
 import Card from "./Card";
 import FilterContext from "../context/filterContext";
-import { useEffect } from "react";
 
 export default function List() {
   const { tasks } = useContext(TaskContext);
   const { filter } = useContext(FilterContext);
 
   const filteredList = useMemo(() => {
-    const filtred = [...tasks].sort((a, b) => {
-      return a.isDone - b.isDone;
-    });
+    const sorted = [...tasks].sort((a, b) => a.isCompleted - b.isCompleted);
     switch (filter) {
       case false:
-        return filtred.filter((item) => !item.isDone);
+        return sorted.filter((item) => !item.isCompleted);
       case true:
-        return filtred.filter((item) => item.isDone);
+        return sorted.filter((item) => item.isCompleted);
       default:
-        return filtred;
+        return sorted;
     }
   }, [tasks, filter]);
 

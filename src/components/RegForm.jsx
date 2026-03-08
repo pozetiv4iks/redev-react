@@ -1,9 +1,11 @@
-import React from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { userReg } from "../service/api/auth";
-import { useNavigate } from "react-router";
+import { useNavigate, Link } from "react-router";
 
 const RegistrationForm = () => {
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const {
@@ -17,13 +19,16 @@ const RegistrationForm = () => {
   });
 
   const onSubmit = async (data) => {
-    console.log("Данные регистрации:", data);
+    setLoading(true);
+    setError("");
     try {
-      const { login, password, email, gender, age } = data;
-      await userReg(login, password, email, gender, age);
+      const { login, email, password, gender, age } = data;
+      await userReg(login, email, password, gender, age);
       navigate("/login");
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      setError(err.response?.data?.message || "Ошибка регистрации");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -42,9 +47,7 @@ const RegistrationForm = () => {
       >
         <div>
           <label>Логин:</label>
-          <input
-            {...register("login", { required: "Введите логин" })}
-          />
+          <input {...register("login", { required: "Введите логин" })} />
           {errors.login && (
             <span style={{ color: "red" }}>{errors.login.message}</span>
           )}
@@ -61,9 +64,7 @@ const RegistrationForm = () => {
             })}
           />
           {errors.email && (
-            <p style={{ color: "red" }}>
-              {errors.email.message}
-            </p>
+            <p style={{ color: "red" }}>{errors.email.message}</p>
           )}
         </div>
 
@@ -85,9 +86,7 @@ const RegistrationForm = () => {
             })}
           />
           {errors.password && (
-            <p style={{ color: "red" }}>
-              {errors.password.message}
-            </p>
+            <p style={{ color: "red" }}>{errors.password.message}</p>
           )}
         </div>
         <div>
@@ -117,19 +116,27 @@ const RegistrationForm = () => {
           </div>
         </div>
 
+        {error && <p style={{ color: "red" }}>{error}</p>}
+
         <button
           type="submit"
+          disabled={loading}
           style={{
             padding: "10px",
-            cursor: "pointer",
+            cursor: loading ? "not-allowed" : "pointer",
             color: "white",
             border: "none",
             borderRadius: "5px",
+            opacity: loading ? 0.5 : 1,
           }}
         >
-          Зарегистрироваться
+          {loading ? "Регистрация..." : "Зарегистрироваться"}
         </button>
       </form>
+      <div>
+        Уже зарегестрированы?{" "}
+        <Link to={{ pathname: "/login" }}>Войти</Link>
+      </div>
     </div>
   );
 };

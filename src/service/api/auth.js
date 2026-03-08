@@ -8,31 +8,18 @@ export const instance = axios.create({
   },
 });
 
-export const userAuth = async (login, password) => {
-  try {
-    const requestData = {
-      email: login,
-      password: password,
-    };
-    const response = instance.post(`/auth/login`, requestData);
-    return response.data;
-  } catch (error) {
-    console.error(`Auth`, error);
-  }
+export const userAuth = async (email, password) => {
+  const response = await instance.post(`/auth/login`, { email, password });
+  return response.data;
 };
 
-export const userReg = async (username, login, password, gender, age) => {
-  try {
-    const requestData = {
-      username: username,
-      email: login,
-      password: password,
-      gender: gender,
-      age: age,
-    };
-    const response = instance.post(`/users/register`, requestData);
-    return response.data;
-  } catch (error) {
-    console.error(`Reg`, error);
-  }
+export const userReg = async (username, email, password, gender, age) => {
+  const response = await instance.post(`/users/register`, {
+    username,
+    email,
+    password,
+    gender,
+    age,
+  });
+  return response.data;
 };

@@ -1,10 +1,13 @@
-import { useContext } from "react";
-import { useForm } from "react-hook-form"; 
+import { useContext, useState } from "react";
+import { useForm } from "react-hook-form";
 import TaskContext from "../context/taskContext";
 import Button from "./Button";
+import { createTask } from "../service/api/todos";
 
 export default function InputToDo() {
-  const { tasks, setTasks } = useContext(TaskContext);
+  const { setTasks } = useContext(TaskContext);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const {
     register,
@@ -13,10 +16,18 @@ export default function InputToDo() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-
-    setTasks([...tasks, { id: crypto.randomUUID(), text: data.fieldName , isDone:false}]);
-    reset();
+  const onSubmit = async (data) => {
+    setLoading(true);
+    setError("");
+    try {
+      const newTask = await createTask(data.fieldName.trim());
+      setTasks((prev) => [...prev, newTask]);
+      reset();
+    } catch (err) {
+      setError(err.response?.data?.message || "Ошибка создания задачи");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -25,6 +36,7 @@ export default function InputToDo() {
         <input
           style={{ marginRight: "10px" }}
           placeholder="Введите текст задачи"
+          disabled={loading}
           {...register("fieldName", {
             required: "Поле обязательно для заполнения",
             validate: (value) =>
@@ -32,12 +44,13 @@ export default function InputToDo() {
               "Строка не может быть пустой или состоять из пробелов",
           })}
         />
-        <p>
-          {errors.fieldName && (
-            <span style={{ color: "red" }}>{errors.fieldName.message}</span>
-          )}
-        </p>
-        <Button type="submit">Добавить</Button>
+        {errors.fieldName && (
+          <p style={{ color: "red" }}>{errors.fieldName.message}</p>
+        )}
+        {error && <p style={{ color: "red" }}>{error}</p>}
+        <Button type="submit" disabled={loading}>
+          {loading ? "Добавление..." : "Добавить"}
+        </Button>
       </form>
     </div>
   );
