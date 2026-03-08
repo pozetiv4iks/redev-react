@@ -13,10 +13,12 @@
     "homepage": "https://pozetiv4iks.github.io/redev-react/"
   },
   "dependencies": {
+    "axios": "^1.13.6",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.71.2",
-    "react-router": "^7.13.0"
+    "react-router": "^7.13.0",
+    "react-router-dom": "^7.13.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

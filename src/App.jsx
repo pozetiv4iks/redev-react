@@ -1,21 +1,25 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
-import TaskContext from "./context/taskContext";
-import FilterContext from "./context/filterContext";
 import ToDoList from "./ToDoList";
+import AuthForm from "./components/AuthForm";
+import { Routes, Route, useNavigate } from "react-router";
+import RegForm from "./components/RegForm";
+import NotFound from "./components/NotFound";
 
 function App() {
-  const [tasks, setTasks] = useState(JSON.parse(localStorage.getItem("tasks")) || []);
-  const [filter, setFilter] = useState("all");
-  useEffect(() => {
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-  }, [tasks, filter]);
+
+  
+
+
   return (
-    <TaskContext.Provider value={{ tasks, setTasks }}>
-      <FilterContext.Provider value={{ filter, setFilter }}>
-        <ToDoList />
-      </FilterContext.Provider>
-    </TaskContext.Provider>
+    <>
+      <Routes>
+        <Route path="/login" element={<AuthForm />} />
+        <Route path="/registration" element={<RegForm />} />
+        <Route path="/todo" element={<ToDoList />} />
+        <Route path="*" element={<NotFound />} />
+      </Routes>
+    </>
   );
 }
 

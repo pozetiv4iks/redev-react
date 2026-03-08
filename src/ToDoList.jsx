@@ -4,14 +4,24 @@ import InputToDo from "./components/InputToDo";
 import List from "./components/List";
 import TaskContext from "./context/taskContext";
 import Button from "./components/Button";
-import { use } from "react";
+import { useNavigate } from "react";
 
 export default function ToDoList() {
   const [count, setCount] = useState(0);
   const { tasks, setTasks } = useContext(TaskContext);
 
+  const navigation = useNavigate();
+
   useEffect(() => {
-    setCount(tasks.filter((item) => !item.isDone).length)
+    if (localStorage.getItem("token")) {
+      navigation("/to-do");
+    } else {
+      navigation("/login");
+    }
+  }, []);
+
+  useEffect(() => {
+    setCount(tasks.filter((item) => !item.isDone).length);
   }, [tasks]);
 
   const handleClear = () => {
@@ -27,9 +37,7 @@ export default function ToDoList() {
       <List />
       <FilterList />
       <div className="clearBlock" style={{ paddingTop: "10px" }}>
-        <span style={{ marginRight: "10px" }}>
-          Осталось дел: {count}
-        </span>
+        <span style={{ marginRight: "10px" }}>Осталось дел: {count}</span>
         <Button func={() => handleClear()}>Очистить выполненные</Button>
       </div>
     </div>

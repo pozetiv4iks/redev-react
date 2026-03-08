@@ -1,0 +1,1 @@
+export const REDEV_URL = 'https://todo-redev.herokuapp.com/api'
