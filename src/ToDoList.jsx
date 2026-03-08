@@ -25,8 +25,8 @@ export default function ToDoList() {
       try {
         const data = await getTasks();
         setTasks(data);
-      } catch (err) {
-        setError(err.response?.data?.message || "Ошибка загрузки задач");
+      } catch (error) {
+        setError(error);
       } finally {
         setLoading(false);
       }
@@ -48,7 +48,7 @@ export default function ToDoList() {
       await Promise.all(completed.map((item) => deleteTask(item.id)));
       setTasks((prev) => prev.filter((item) => !item.isCompleted));
     } catch (err) {
-      setError(err.response?.data?.message || "Ошибка очистки задач");
+      setError(err.response?.data?.message);
     } finally {
       setClearing(false);
     }
