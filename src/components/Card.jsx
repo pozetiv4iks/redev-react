@@ -1,45 +1,30 @@
-import { useContext, useState } from "react";
-import TaskContext from "../context/taskContext";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import Button from "./Button";
+import { toggleTask, deleteTask, editTask } from "../redux/actions";
 
 export default function Card({ item }) {
   const [change, setChange] = useState(false);
   const [textInput, setTextInput] = useState(item.text);
-  const { tasks, setTasks } = useContext(TaskContext);
+  const dispatch = useDispatch();
 
-  const handleChecked = () => {
-    setTasks(
-      tasks.map((task) =>
-        task.id === item.id ? { ...task, isDone: !task.isDone } : task,
-      ),
-    );
-  };
-
-  const handleDelete = () => {
-    setTasks(tasks.filter((task) => task.id !== item.id));
-  };
+  const handleChecked = () => dispatch(toggleTask(item.id));
+  const handleDelete = () => dispatch(deleteTask(item.id));
 
   const handleSave = () => {
     const trimmedText = textInput.trim();
-
     if (trimmedText === "") {
       setTextInput(item.text);
       setChange(false);
       return;
     }
-
-    setTasks(
-      tasks.map((task) =>
-        task.id === item.id ? { ...task, text: trimmedText } : task,
-      ),
-    );
+    dispatch(editTask(item.id, trimmedText));
     setChange(false);
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      handleSave();
-    } else if (e.key === "Escape") {
+    if (e.key === "Enter") handleSave();
+    else if (e.key === "Escape") {
       setTextInput(item.text);
       setChange(false);
     }

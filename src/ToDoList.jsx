@@ -1,22 +1,15 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import FilterList from "./components/FilterList";
 import InputToDo from "./components/InputToDo";
 import List from "./components/List";
-import TaskContext from "./context/taskContext";
 import Button from "./components/Button";
-import { use } from "react";
+import { clearCompleted } from "./redux/actions";
 
 export default function ToDoList() {
-  const [count, setCount] = useState(0);
-  const { tasks, setTasks } = useContext(TaskContext);
-
-  useEffect(() => {
-    setCount(tasks.filter((item) => !item.isDone).length)
-  }, [tasks]);
-
-  const handleClear = () => {
-    setTasks(tasks.filter((item) => !item.isDone));
-  };
+  const tasks = useSelector((state) => state.tasks);
+  const dispatch = useDispatch();
+  const count = tasks.filter((item) => !item.isDone).length;
 
   return (
     <div className="block" style={{ padding: "20px 0" }}>
@@ -27,10 +20,10 @@ export default function ToDoList() {
       <List />
       <FilterList />
       <div className="clearBlock" style={{ paddingTop: "10px" }}>
-        <span style={{ marginRight: "10px" }}>
-          Осталось дел: {count}
-        </span>
-        <Button func={() => handleClear()}>Очистить выполненные</Button>
+        <span style={{ marginRight: "10px" }}>Осталось дел: {count}</span>
+        <Button func={() => dispatch(clearCompleted())}>
+          Очистить выполненные
+        </Button>
       </div>
     </div>
   );

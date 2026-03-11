@@ -1,10 +1,10 @@
-import { useContext } from "react";
-import { useForm } from "react-hook-form"; // 1. Import the hook
-import TaskContext from "../context/taskContext";
+import { useDispatch } from "react-redux";
+import { useForm } from "react-hook-form";
 import Button from "./Button";
+import { addTask } from "../redux/actions";
 
 export default function InputToDo() {
-  const { tasks, setTasks } = useContext(TaskContext);
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -14,8 +14,7 @@ export default function InputToDo() {
   } = useForm();
 
   const onSubmit = (data) => {
-
-    setTasks([...tasks, { id: crypto.randomUUID(), text: data.fieldName , isDone:false}]);
+    dispatch(addTask(data.fieldName));
     reset();
   };
 
