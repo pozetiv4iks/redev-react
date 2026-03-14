@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useForm } from "react-hook-form";
 import Button from "./Button";
-import { addTask } from "../redux/actions";
+import { add } from "../redux/slices/tasksSlice";
 
 export default function InputToDo() {
   const dispatch = useDispatch();
@@ -14,7 +14,7 @@ export default function InputToDo() {
   } = useForm();
 
   const onSubmit = (data) => {
-    dispatch(addTask(data.fieldName));
+    dispatch(add(data.fieldName));
     reset();
   };
 

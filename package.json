@@ -13,6 +13,7 @@
     "homepage": "https://pozetiv4iks.github.io/redev-react/"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.11.2",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-hook-form": "^7.71.2",

@@ -4,7 +4,7 @@ import FilterList from "./components/FilterList";
 import InputToDo from "./components/InputToDo";
 import List from "./components/List";
 import Button from "./components/Button";
-import { clearCompleted } from "./redux/actions";
+import { clear } from "./redux/slices/tasksSlice";
 
 export default function ToDoList() {
   const tasks = useSelector((state) => state.tasks);
@@ -21,7 +21,7 @@ export default function ToDoList() {
       <FilterList />
       <div className="clearBlock" style={{ paddingTop: "10px" }}>
         <span style={{ marginRight: "10px" }}>Осталось дел: {count}</span>
-        <Button func={() => dispatch(clearCompleted())}>
+        <Button func={() => dispatch(clear())}>
           Очистить выполненные
         </Button>
       </div>

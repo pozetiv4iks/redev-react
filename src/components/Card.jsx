@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import Button from "./Button";
-import { toggleTask, deleteTask, editTask } from "../redux/actions";
+import { toggle, deleteTask, edit } from "../redux/slices/tasksSlice";
 
 export default function Card({ item }) {
   const [change, setChange] = useState(false);
   const [textInput, setTextInput] = useState(item.text);
   const dispatch = useDispatch();
 
-  const handleChecked = () => dispatch(toggleTask(item.id));
+  const handleChecked = () => dispatch(toggle(item.id));
   const handleDelete = () => dispatch(deleteTask(item.id));
 
   const handleSave = () => {
@@ -18,7 +18,7 @@ export default function Card({ item }) {
       setChange(false);
       return;
     }
-    dispatch(editTask(item.id, trimmedText));
+    dispatch(edit({ id: item.id, text: trimmedText }));
     setChange(false);
   };
 
