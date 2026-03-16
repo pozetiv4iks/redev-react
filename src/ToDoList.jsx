@@ -1,18 +1,18 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router";
 import FilterList from "./components/FilterList";
 import InputToDo from "./components/InputToDo";
 import List from "./components/List";
-import TaskContext from "./context/taskContext";
 import Button from "./components/Button";
-import { useNavigate } from "react-router";
-import { getTasks, deleteTask } from "./service/api/todos";
+import {
+  fetchTasks,
+  clearCompletedThunk,
+} from "./redux/slices/todos";
 
 export default function ToDoList() {
-  const [count, setCount] = useState(0);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
-  const [clearing, setClearing] = useState(false);
-  const { tasks, setTasks } = useContext(TaskContext);
+  const { tasks, loading, error } = useSelector((state) => state.todos);
+  const dispatch = useDispatch();
   const navigation = useNavigate();
 
   useEffect(() => {
@@ -20,46 +20,17 @@ export default function ToDoList() {
       navigation("/login");
       return;
     }
+    dispatch(fetchTasks());
+  }, [dispatch, navigation]);
 
-    const loadTasks = async () => {
-      try {
-        const data = await getTasks();
-        setTasks(data);
-      } catch (error) {
-        setError(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    loadTasks();
-  }, []);
-
-  useEffect(() => {
-    setCount(tasks.filter((item) => !item.isCompleted).length);
-  }, [tasks]);
-
-  const handleClear = async () => {
-    const completed = tasks.filter((item) => item.isCompleted);
-    if (completed.length === 0) return;
-
-    setClearing(true);
-    try {
-      await Promise.all(completed.map((item) => deleteTask(item.id)));
-      setTasks((prev) => prev.filter((item) => !item.isCompleted));
-    } catch (err) {
-      setError(err.response?.data?.message);
-    } finally {
-      setClearing(false);
-    }
-  };
+  const count = tasks.filter((item) => !item.isCompleted).length;
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigation("/login");
   };
 
-  if (loading) {
+  if (loading && tasks.length === 0) {
     return (
       <div className="block" style={{ padding: "20px 0", textAlign: "center" }}>
         <p>Загрузка задач...</p>
@@ -78,11 +49,14 @@ export default function ToDoList() {
       <FilterList />
       <div className="clearBlock" style={{ paddingTop: "10px" }}>
         <span style={{ marginRight: "10px" }}>Осталось дел: {count}</span>
-        <Button func={handleClear} disabled={clearing}>
-          {clearing ? "Очистка..." : "Очистить выполненные"}
+        <Button
+          func={() => dispatch(clearCompletedThunk())}
+          disabled={loading}
+        >
+          {loading ? "Очистка..." : "Очистить выполненные"}
         </Button>
       </div>
-      <Button func={() => handleLogout()}>Выйти</Button>
+      <Button func={handleLogout}>Выйти</Button>
     </div>
   );
 }

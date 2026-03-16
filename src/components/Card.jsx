@@ -1,63 +1,36 @@
-import { useContext, useState } from "react";
-import TaskContext from "../context/taskContext";
+import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "./Button";
-import { deleteTask, editTask, toggleTask } from "../service/api/todos";
+import {
+  toggleTaskThunk,
+  deleteTaskThunk,
+  editTaskThunk,
+} from "../redux/slices/todos";
 
 export default function Card({ item }) {
   const [change, setChange] = useState(false);
   const [textInput, setTextInput] = useState(item.title);
-  const [loading, setLoading] = useState(false);
-  const { setTasks } = useContext(TaskContext);
+  const dispatch = useDispatch();
+  const loading = useSelector((state) => state.todos.loading);
 
-  const handleChecked = async () => {
-    setLoading(true);
-    try {
-      const updated = await toggleTask(item);
-      setTasks((prev) => prev.map((t) => (t.id === item.id ? updated : t)));
-    } catch (error) {
-      console.error("Ошибка переключения задачи:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const handleChecked = () => dispatch(toggleTaskThunk(item));
+  const handleDelete = () => dispatch(deleteTaskThunk(item.id));
 
-  const handleDelete = async () => {
-    setLoading(true);
-    try {
-      await deleteTask(item.id);
-      setTasks((prev) => prev.filter((t) => t.id !== item.id));
-    } catch (error) {
-      console.error("Ошибка удаления задачи:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleSave = async () => {
+  const handleSave = () => {
     const trimmedText = textInput.trim();
-
+    
     if (trimmedText === "") {
       setTextInput(item.title);
       setChange(false);
       return;
     }
-
-    setLoading(true);
-    try {
-      const updated = await editTask(item.id, trimmedText);
-      setTasks((prev) => prev.map((t) => (t.id === item.id ? updated : t)));
-      setChange(false);
-    } catch (error) {
-      console.error("Ошибка редактирования задачи:", error);
-    } finally {
-      setLoading(false);
-    }
+    dispatch(editTaskThunk({ id: item.id, title: trimmedText }));
+    setChange(false);
   };
 
   const handleKeyDown = (e) => {
-    if (e.key === "Enter") {
-      handleSave();
-    } else if (e.key === "Escape") {
+    if (e.key === "Enter") handleSave();
+    else if (e.key === "Escape") {
       setTextInput(item.title);
       setChange(false);
     }

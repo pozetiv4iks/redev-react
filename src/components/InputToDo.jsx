@@ -1,13 +1,11 @@
-import { useContext, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import TaskContext from "../context/taskContext";
 import Button from "./Button";
-import { createTask } from "../service/api/todos";
+import { createTaskThunk } from "../redux/slices/todos";
 
 export default function InputToDo() {
-  const { setTasks } = useContext(TaskContext);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.todos);
 
   const {
     register,
@@ -16,18 +14,9 @@ export default function InputToDo() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
-    setLoading(true);
-    setError("");
-    try {
-      const newTask = await createTask(data.fieldName.trim());
-      setTasks((prev) => [...prev, newTask]);
-      reset();
-    } catch (err) {
-      setError(err.response?.data?.message || "Ошибка создания задачи");
-    } finally {
-      setLoading(false);
-    }
+  const onSubmit = (data) => {
+    dispatch(createTaskThunk(data.fieldName.trim()));
+    reset();
   };
 
   return (

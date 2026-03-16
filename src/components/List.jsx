@@ -1,11 +1,10 @@
-import { useContext, useMemo } from "react";
-import TaskContext from "../context/taskContext";
+import { useMemo } from "react";
+import { useSelector } from "react-redux";
 import Card from "./Card";
-import FilterContext from "../context/filterContext";
 
 export default function List() {
-  const { tasks } = useContext(TaskContext);
-  const { filter } = useContext(FilterContext);
+  const tasks = useSelector((state) => state.todos.tasks);
+  const filter = useSelector((state) => state.filter);
 
   const filteredList = useMemo(() => {
     const sorted = [...tasks].sort((a, b) => a.isCompleted - b.isCompleted);

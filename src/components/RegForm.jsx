@@ -1,12 +1,12 @@
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { userReg } from "../service/api/auth";
-import { useNavigate, Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { register as registerThunk } from "../redux/slices/authSlice";
 
-const RegistrationForm = () => {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+function RegistrationForm() {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { loading, error } = useSelector((state) => state.auth);
 
   const {
     register,
@@ -18,18 +18,19 @@ const RegistrationForm = () => {
     },
   });
 
-  const onSubmit = async (data) => {
-    setLoading(true);
-    setError("");
-    try {
-      const { login, email, password, gender, age } = data;
-      await userReg(login, email, password, gender, age);
-      navigate("/login");
-    } catch (err) {
-      setError(err.response?.data?.message || "Ошибка регистрации");
-    } finally {
-      setLoading(false);
-    }
+  const onSubmit = (data) => {
+    dispatch(
+      registerThunk({
+        login: data.login,
+        email: data.email,
+        password: data.password,
+        gender: data.gender,
+        age: Number(data.age),
+      })
+    )
+      .unwrap()
+      .then(() => navigate("/login"))
+      .catch(() => {});
   };
 
   return (
@@ -95,12 +96,12 @@ const RegistrationForm = () => {
             type="number"
             {...register("age", {
               required: "Укажите возраст",
-              min: 18,
+              min: { value: 18, message: "Нужно быть старше 18 лет" },
               max: 99,
             })}
           />
           {errors.age && (
-            <span style={{ color: "red" }}>Нужно быть старше 18 лет</span>
+            <span style={{ color: "red" }}>{errors.age.message}</span>
           )}
         </div>
         <div>
@@ -134,7 +135,7 @@ const RegistrationForm = () => {
         </button>
       </form>
       <div>
-        Уже зарегестрированы?{" "}
+        Уже зарегестрированы?
         <Link to={{ pathname: "/login" }}>Войти</Link>
       </div>
     </div>

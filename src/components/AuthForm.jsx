@@ -1,13 +1,13 @@
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useForm } from "react-hook-form";
-import { userAuth } from "../service/api/auth";
 import Button from "./Button";
 import { Link, useNavigate } from "react-router";
+import { login } from "../redux/slices/authSlice";
 
 export default function AuthForm() {
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { loading, error } = useSelector((state) => state.auth);
 
   const {
     register,
@@ -15,18 +15,10 @@ export default function AuthForm() {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = async (data) => {
-    setLoading(true);
-    setError("");
-    try {
-      const dataRes = await userAuth(data.email, data.password);
-      localStorage.setItem("token", dataRes.token);
-      navigate("/todo");
-    } catch (err) {
-      setError(err.response?.data?.message || "Ошибка авторизации");
-    } finally {
-      setLoading(false);
-    }
+  const onSubmit = (data) => {
+    dispatch(login({ email: data.email, password: data.password }))
+      .then(() => navigate("/todo"))
+      .catch(() => {});
   };
 
   return (
